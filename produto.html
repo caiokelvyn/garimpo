@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Produto | Garimpo dos Bons</title>
+
+    <meta name="description" content="Confira os detalhes deste produto no Garimpo dos Bons.">
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="header-top">
+
+            <a href="index.html" class="logo">
+                <span class="logo-main">Garimpo</span>
+                <span class="logo-sub">dos Bons</span>
+            </a>
+
+            <form class="search-container" action="index.html" method="get">
+                <input
+                    type="text"
+                    name="busca"
+                    placeholder="O que você está procurando?"
+                >
+                <button type="submit" aria-label="Pesquisar">🔍</button>
+            </form>
+
+            <div class="header-actions">
+                <a href="index.html#categorias">Categorias</a>
+                <a href="index.html#produtos">Ofertas</a>
+            </div>
+
+        </div>
+
+        <nav class="navbar">
+            <a href="index.html">Início</a>
+            <a href="index.html#categorias">Categorias</a>
+            <a href="index.html#produtos">Todos os produtos</a>
+        </nav>
+
+    </header>
+
+    <main class="product-page">
+
+        <div class="breadcrumb">
+            <a href="index.html">Início</a>
+            <span>›</span>
+            <span id="breadcrumbCategory">Produto</span>
+        </div>
+
+        <section id="productDetails" class="product-detail-container">
+
+            <p>Carregando produto...</p>
+
+        </section>
+
+        <section class="related-section">
+
+            <div class="section-heading">
+                <h2>Você também pode gostar</h2>
+                <p>Confira outros produtos selecionados.</p>
+            </div>
+
+            <div class="products-grid" id="relatedProducts"></div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+                <h2>Garimpo dos Bons</h2>
+                <p>Bons achados. Boas escolhas.</p>
+            </div>
+
+            <div class="footer-links">
+                <a href="index.html">Início</a>
+                <a href="index.html#categorias">Categorias</a>
+            </div>
+
+        </div>
+
+        <div class="affiliate-notice">
+            Este site participa de programas de afiliados. Podemos receber
+            uma comissão por compras realizadas através dos nossos links,
+            sem custo adicional para você.
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 Garimpo dos Bons. Todos os direitos reservados.
+        </div>
+
+    </footer>
+
+    <script src="produto.js"></script>
+
+</body>
+</html>
