@@ -4,35 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Garimpo dos Bons | Bons achados. Boas escolhas.</title>
-
     <meta name="description" content="Encontre produtos selecionados e ofertas no Garimpo dos Bons.">
-
     <link rel="stylesheet" href="style.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-    <header class="header">
-
+    <header class="header amazon-header">
         <div class="header-top">
-
             <a href="index.html" class="logo">
                 <span class="logo-main">Garimpo</span>
                 <span class="logo-sub">dos Bons</span>
             </a>
 
             <div class="search-container">
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="O que você está procurando?"
-                >
+                <input type="text" id="searchInput" placeholder="O que você está procurando?">
                 <button id="searchButton" aria-label="Pesquisar">🔍</button>
             </div>
 
@@ -40,11 +29,10 @@
                 <a href="#categorias">Categorias</a>
                 <a href="#produtos">Ofertas</a>
             </div>
-
         </div>
 
         <nav class="navbar">
-            <a href="#categorias">Todos os departamentos</a>
+            <a href="#categorias" data-category="">Todos</a>
             <a href="#produtos" data-category="Eletrônicos">Eletrônicos</a>
             <a href="#produtos" data-category="Ferramentas">Ferramentas</a>
             <a href="#produtos" data-category="Informática">Informática</a>
@@ -57,133 +45,107 @@
             <a href="#produtos" data-category="Games e Consoles">Games e Consoles</a>
             <a href="#produtos" data-category="Celulares e Smartphones">Celulares e Smartphones</a>
         </nav>
-
     </header>
 
     <main>
-
-        <section class="hero">
-
-            <div class="hero-content">
-                <span class="hero-tag">GARIMPOS SELECIONADOS</span>
-
-                <h1>
-                    Bons achados.<br>
-                    Boas escolhas.
-                </h1>
-
-                <p>
-                    Produtos selecionados para você encontrar
-                    ótimas opções sem perder tempo.
-                </p>
-
-                <a href="#produtos" class="hero-button">
-                    Explorar produtos
-                </a>
+        <section class="home-banner">
+            <div>
+                <span>GARIMPOS SELECIONADOS</span>
+                <h1>Bons achados. Boas escolhas.</h1>
+                <p>Encontre ofertas e produtos selecionados para você.</p>
+                <a href="#produtos">Explorar ofertas</a>
             </div>
-
         </section>
 
         <section class="categories-section" id="categorias">
-
             <div class="section-heading">
-                <h2>Explore nossas categorias</h2>
-                <p>Encontre o que você precisa.</p>
+                <h2>Compre por categoria</h2>
+                <p>Encontre rapidamente o que está procurando.</p>
             </div>
 
             <div class="categories-grid">
-
-                <a href="#produtos" class="category-card" data-category="Eletrônicos">
-                    <div class="category-icon">📺</div>
-                    <h3>Eletrônicos</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Ferramentas">
-                    <div class="category-icon">🔧</div>
-                    <h3>Ferramentas</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Informática">
-                    <div class="category-icon">💻</div>
-                    <h3>Informática</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Esportes">
-                    <div class="category-icon">⚽</div>
-                    <h3>Esportes</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Escritório">
-                    <div class="category-icon">🖊️</div>
-                    <h3>Escritório</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Sapatos">
-                    <div class="category-icon">👟</div>
-                    <h3>Sapatos</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Itens de Casa">
-                    <div class="category-icon">🏠</div>
-                    <h3>Itens de Casa</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Relógios e Joias">
-                    <div class="category-icon">⌚</div>
-                    <h3>Relógios e Joias</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Suplementos e Nutrição">
-                    <div class="category-icon">💪</div>
-                    <h3>Suplementos e Nutrição</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Games e Consoles">
-                    <div class="category-icon">🎮</div>
-                    <h3>Games e Consoles</h3>
-                    <span>Ver produtos</span>
-                </a>
-
-                <a href="#produtos" class="category-card" data-category="Celulares e Smartphones">
-                    <div class="category-icon">📱</div>
-                    <h3>Celulares e Smartphones</h3>
-                    <span>Ver produtos</span>
-                </a>
-
+                <a href="#produtos" class="category-card" data-category="Eletrônicos"><div class="category-icon">📺</div><h3>Eletrônicos</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Ferramentas"><div class="category-icon">🔧</div><h3>Ferramentas</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Informática"><div class="category-icon">💻</div><h3>Informática</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Esportes"><div class="category-icon">⚽</div><h3>Esportes</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Escritório"><div class="category-icon">🖊️</div><h3>Escritório</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Sapatos"><div class="category-icon">👟</div><h3>Sapatos</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Itens de Casa"><div class="category-icon">🏠</div><h3>Itens de Casa</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Relógios e Joias"><div class="category-icon">⌚</div><h3>Relógios e Joias</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Suplementos e Nutrição"><div class="category-icon">💪</div><h3>Suplementos e Nutrição</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Games e Consoles"><div class="category-icon">🎮</div><h3>Games e Consoles</h3><span>Ver produtos</span></a>
+                <a href="#produtos" class="category-card" data-category="Celulares e Smartphones"><div class="category-icon">📱</div><h3>Celulares e Smartphones</h3><span>Ver produtos</span></a>
             </div>
-
         </section>
 
-        <section class="products-section" id="produtos">
+        <section class="catalog-section" id="produtos">
+            <aside class="catalog-sidebar" id="filterSidebar">
+                <h2>Filtrar por</h2>
 
-            <div class="section-heading">
-                <h2>Produtos em destaque</h2>
-                <p>Confira nossos achados selecionados.</p>
+                <div class="filter-group">
+                    <h3>Departamentos</h3>
+                    <div id="categoryFilters"></div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Preço</h3>
+                    <label for="minPrice">Preço mínimo (R$)</label>
+                    <input type="number" id="minPrice" min="0" placeholder="0">
+
+                    <label for="maxPrice">Preço máximo (R$)</label>
+                    <input type="number" id="maxPrice" min="0" placeholder="Sem limite">
+                </div>
+
+                <div class="filter-group">
+                    <h3>Ofertas</h3>
+                    <label class="filter-option">
+                        <input type="checkbox" id="discountOnly">
+                        Somente produtos com desconto
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" id="featuredOnly">
+                        Produtos em destaque
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" id="bestSellerOnly">
+                        Mais vendidos
+                    </label>
+                </div>
+
+                <button id="clearFilters" class="clear-filters">Limpar filtros</button>
+            </aside>
+
+            <div class="catalog-content">
+                <div class="catalog-heading">
+                    <div>
+                        <h2 id="catalogTitle">Todos os produtos</h2>
+                        <p id="productCount">Carregando produtos...</p>
+                    </div>
+
+                    <div class="catalog-controls">
+                        <button id="mobileFilterButton" class="mobile-filter-button">☰ Filtros</button>
+                        <label for="sortProducts">Ordenar por:</label>
+                        <select id="sortProducts">
+                            <option value="featured">Destaques</option>
+                            <option value="price-asc">Menor preço</option>
+                            <option value="price-desc">Maior preço</option>
+                            <option value="discount">Maior desconto</option>
+                            <option value="name">Nome</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="products-grid" id="productsGrid"></div>
+
+                <p id="noResults" class="no-results" hidden>
+                    Nenhum produto encontrado com esses filtros.
+                </p>
             </div>
-
-            <div class="products-grid" id="productsGrid"></div>
-
-            <p id="noResults" class="no-results" hidden>
-                Nenhum produto encontrado.
-            </p>
-
         </section>
-
     </main>
 
     <footer class="footer">
-
         <div class="footer-content">
-
             <div class="footer-brand">
                 <h2>Garimpo dos Bons</h2>
                 <p>Bons achados. Boas escolhas.</p>
@@ -194,7 +156,6 @@
                 <a href="#produtos">Produtos</a>
                 <a href="index.html">Voltar ao início</a>
             </div>
-
         </div>
 
         <div class="affiliate-notice">
@@ -206,10 +167,8 @@
         <div class="footer-bottom">
             © 2026 Garimpo dos Bons. Todos os direitos reservados.
         </div>
-
     </footer>
 
     <script src="script.js"></script>
-
 </body>
 </html>

@@ -1,726 +1,1837 @@
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel | Garimpo dos Bons</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #e3e6e6;
-            color: #222;
-        }
-
-        header {
-            background: #131921;
-            color: white;
-            padding: 18px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-        }
-
-        header h1 {
-            font-size: 20px;
-        }
-
-        header a {
-            color: #febd69;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        main {
-            max-width: 1250px;
-            margin: 25px auto;
-            padding: 0 15px;
-        }
-
-        .editor-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
-            gap: 20px;
-            align-items: start;
-        }
-
-        .panel {
-            background: white;
-            padding: 22px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            font-size: 19px;
-            margin-bottom: 18px;
-            color: #131921;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 13px;
-        }
-
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .full {
-            grid-column: 1 / -1;
-        }
-
-        label {
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 11px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        input:focus, select:focus {
-            outline: 2px solid #febd69;
-            border-color: #febd69;
-        }
-
-        .checks {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .checks label {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            font-weight: normal;
-        }
-
-        .checks input {
-            width: auto;
-        }
-
-        button {
-            border: none;
-            border-radius: 5px;
-            padding: 11px 15px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .add-button {
-            background: #ffd814;
-            color: #131921;
-            margin-top: 18px;
-        }
-
-        .export-button {
-            background: #232f3e;
-            color: white;
-        }
-
-        .import-button {
-            background: #febd69;
-            color: #131921;
-        }
-
-        .delete-button {
-            background: #c62828;
-            color: white;
-            padding: 9px 12px;
-        }
-
-        .toolbar {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 18px;
-        }
-
-        .product-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .product {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            border: 1px solid #eee;
-            border-radius: 6px;
-            padding: 12px;
-        }
-
-        .product-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 0;
-        }
-
-        .product img {
-            width: 55px;
-            height: 55px;
-            min-width: 55px;
-            object-fit: contain;
-            object-position: center;
-            display: block;
-            padding: 3px;
-            background: #ffffff;
-            border: 1px solid #eee;
-            border-radius: 5px;
-        }
-
-        .product h3 {
-            font-size: 14px;
-            margin-bottom: 5px;
-            overflow-wrap: anywhere;
-        }
-
-        .product p {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 25px;
-            color: #777;
-        }
-
-        .notice {
-            background: #fff8e1;
-            padding: 12px;
-            border-radius: 5px;
-            font-size: 13px;
-            line-height: 1.5;
-            margin-bottom: 18px;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .preview-panel {
-            position: sticky;
-            top: 20px;
-        }
-
-        .preview-label {
-            font-size: 12px;
-            color: #777;
-            margin-top: -10px;
-            margin-bottom: 15px;
-        }
-
-        .preview-card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 7px;
-            overflow: hidden;
-            max-width: 320px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .preview-image {
-            height: 230px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            background: #ffffff;
-            overflow: hidden;
-        }
-
-        .preview-image img {
-            width: 100%;
-            height: 100%;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            object-position: center;
-            display: block;
-            padding: 8px;
-            background: #ffffff;
-        }
-
-        .preview-placeholder {
-            color: #aaa;
-            font-size: 13px;
-            text-align: center;
-        }
-
-        .preview-content {
-            padding: 15px;
-        }
-
-        .preview-category {
-            display: inline-block;
-            font-size: 11px;
-            color: #666;
-            margin-bottom: 8px;
-        }
-
-        .preview-content h3 {
-            font-size: 15px;
-            line-height: 1.4;
-            min-height: 42px;
-            margin-bottom: 12px;
-            color: #131921;
-        }
-
-        .preview-old-price {
-            display: block;
-            font-size: 12px;
-            color: #777;
-            text-decoration: line-through;
-            min-height: 15px;
-        }
-
-        .preview-price {
-            display: block;
-            color: #b12704;
-            font-size: 20px;
-            font-weight: bold;
-            margin: 5px 0 12px;
-        }
-
-        .preview-buy {
-            display: block;
-            text-align: center;
-            background: #ffd814;
-            color: #131921;
-            padding: 11px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .preview-badges {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-        .preview-badge {
-            background: #232f3e;
-            color: white;
-            font-size: 10px;
-            padding: 5px 7px;
-            border-radius: 3px;
-        }
-
-        .preview-badge.gold {
-            background: #febd69;
-            color: #131921;
-        }
-
-        @media (max-width: 850px) {
-            .editor-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .preview-panel {
-                position: static;
-            }
-
-            .preview-card {
-                max-width: 350px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .full {
-                grid-column: auto;
-            }
-
-            .product img {
-                width: 45px;
-                height: 45px;
-                min-width: 45px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Garimpo dos Bons | Painel</h1>
-        <a href="index.html">Voltar para a loja</a>
-    </header>
-
-    <main>
-
-        <div class="editor-layout">
-
-            <section class="panel">
-                <h2>Adicionar produto</h2>
-
-                <form id="productForm">
-                    <div class="form-grid">
-
-                        <div class="field">
-                            <label for="name">Nome do produto *</label>
-                            <input type="text" id="name" placeholder="Nome do produto" required>
-                        </div>
-
-                        <div class="field">
-                            <label for="category">Categoria *</label>
-                            <select id="category" required>
-                                <option value="">Selecione</option>
-                                <option value="Eletrônicos">Eletrônicos</option>
-                                <option value="Ferramentas">Ferramentas</option>
-                                <option value="Informática">Informática</option>
-                                <option value="Esportes">Esportes</option>
-                                <option value="Outros">Outros</option>
-                            </select>
-                        </div>
-
-                        <div class="field">
-                            <label for="price">Preço atual</label>
-                            <input type="text" id="price" placeholder="R$ 199,90">
-                        </div>
-
-                        <div class="field">
-                            <label for="oldPrice">Preço antigo</label>
-                            <input type="text" id="oldPrice" placeholder="R$ 299,90">
-                        </div>
-
-                        <div class="field full">
-                            <label for="image">Link da imagem *</label>
-                            <input type="url" id="image" placeholder="https://..." required>
-                        </div>
-
-                        <div class="field full">
-                            <label for="affiliateUrl">Link de afiliado *</label>
-                            <input type="url" id="affiliateUrl" placeholder="https://..." required>
-                        </div>
-
-                    </div>
-
-                    <div class="checks">
-                        <label>
-                            <input type="checkbox" id="featured">
-                            Produto em destaque
-                        </label>
-
-                        <label>
-                            <input type="checkbox" id="bestSeller">
-                            Mais vendido
-                        </label>
-                    </div>
-
-                    <button type="submit" class="add-button">Adicionar produto</button>
-                </form>
-            </section>
-
-            <aside class="panel preview-panel">
-                <h2>Pré-visualização</h2>
-                <p class="preview-label">Veja como o produto ficará na loja.</p>
-
-                <div class="preview-card">
-                    <div class="preview-image">
-                        <span class="preview-placeholder" id="previewPlaceholder">A imagem aparecerá aqui</span>
-                        <img id="previewImage" src="" alt="" style="display: none;">
-                    </div>
-
-                    <div class="preview-content">
-                        <div class="preview-badges" id="previewBadges"></div>
-                        <span class="preview-category" id="previewCategory">Categoria</span>
-                        <h3 id="previewName">Nome do produto</h3>
-                        <span class="preview-old-price" id="previewOldPrice"></span>
-                        <span class="preview-price" id="previewPrice">Consultar oferta</span>
-                        <span class="preview-buy">Ver oferta</span>
-                    </div>
-                </div>
-            </aside>
-
-        </div>
-
-        <section class="panel">
-            <h2>Produtos cadastrados</h2>
-
-            <div class="notice">
-                Para atualizar a loja publicada, exporte o catálogo e substitua o arquivo produtos.json do seu projeto.
-            </div>
-
-            <div class="toolbar">
-                <button class="export-button" id="exportButton">Exportar JSON</button>
-                <button class="import-button" id="importButton">Importar JSON</button>
-                <input type="file" id="fileInput" accept=".json,application/json">
-            </div>
-
-            <p id="productCount" style="margin-bottom: 15px; font-size: 13px;"></p>
-
-            <div class="product-list" id="productList">
-                <p class="empty">Carregando produtos...</p>
-            </div>
-        </section>
-
-    </main>
-
-    <script>
-        const STORAGE_KEY = "garimpoDosBonsProdutos";
-        let products = [];
-
-        const productForm = document.getElementById("productForm");
-        const productList = document.getElementById("productList");
-        const productCount = document.getElementById("productCount");
-        const fileInput = document.getElementById("fileInput");
-
-        const fields = {
-            name: document.getElementById("name"),
-            category: document.getElementById("category"),
-            price: document.getElementById("price"),
-            oldPrice: document.getElementById("oldPrice"),
-            image: document.getElementById("image"),
-            featured: document.getElementById("featured"),
-            bestSeller: document.getElementById("bestSeller")
-        };
-
-        function escapeHTML(value) {
-            return String(value ?? "").replace(/[&<>"']/g, character => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#039;"
-            })[character]);
-        }
-
-        function updatePreview() {
-            document.getElementById("previewName").textContent =
-                fields.name.value.trim() || "Nome do produto";
-
-            document.getElementById("previewCategory").textContent =
-                fields.category.value || "Categoria";
-
-            document.getElementById("previewPrice").textContent =
-                fields.price.value.trim() || "Consultar oferta";
-
-            document.getElementById("previewOldPrice").textContent =
-                fields.oldPrice.value.trim();
-
-            const image = document.getElementById("previewImage");
-            const placeholder = document.getElementById("previewPlaceholder");
-            const imageUrl = fields.image.value.trim();
-
-            image.style.display = "none";
-            placeholder.style.display = "block";
-
-            if (imageUrl) {
-                image.onload = () => {
-                    image.style.display = "block";
-                    placeholder.style.display = "none";
-                };
-
-                image.onerror = () => {
-                    image.style.display = "none";
-                    placeholder.style.display = "block";
-                    placeholder.textContent = "Não foi possível carregar a imagem";
-                };
-
-                image.src = imageUrl;
-            }
-
-            const badges = [];
-
-            if (fields.featured.checked) {
-                badges.push('<span class="preview-badge gold">Destaque</span>');
-            }
-
-            if (fields.bestSeller.checked) {
-                badges.push('<span class="preview-badge">Mais vendido</span>');
-            }
-
-            document.getElementById("previewBadges").innerHTML = badges.join("");
-        }
-
-        Object.values(fields).forEach(field => {
-            field.addEventListener("input", updatePreview);
-            field.addEventListener("change", updatePreview);
-        });
-
-        function saveProducts() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-            renderProducts();
-        }
-
-        async function loadProducts() {
-            const savedProducts = localStorage.getItem(STORAGE_KEY);
-
-            if (savedProducts !== null) {
-                try {
-                    products = JSON.parse(savedProducts);
-                    if (!Array.isArray(products)) throw new Error();
-                    renderProducts();
-                    return;
-                } catch {
-                    localStorage.removeItem(STORAGE_KEY);
-                }
-            }
-
-            try {
-                const response = await fetch("produtos.json");
-                if (!response.ok) throw new Error();
-
-                products = await response.json();
-                if (!Array.isArray(products)) throw new Error();
-
-                renderProducts();
-            } catch {
-                productList.innerHTML = '<p class="empty">Não foi possível carregar o produtos.json.</p>';
-            }
-        }
-
-        function renderProducts() {
-            productCount.textContent = `${products.length} produto(s)`;
-
-            if (products.length === 0) {
-                productList.innerHTML = '<p class="empty">Nenhum produto cadastrado.</p>';
-                return;
-            }
-
-            productList.innerHTML = products.map(product => `
-                <div class="product">
-                    <div class="product-info">
-                        <img src="${escapeHTML(product.image || "")}" alt="" onerror="this.style.display='none'">
-                        <div>
-                            <h3>${escapeHTML(product.name)}</h3>
-                            <p>${escapeHTML(product.category)} | ${escapeHTML(product.price || "Preço não informado")}</p>
-                        </div>
-                    </div>
-                    <button class="delete-button" data-delete="${escapeHTML(product.id)}">Excluir</button>
-                </div>
-            `).join("");
-        }
-
-        productForm.addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            const newId = products.reduce((highest, product) => {
-                const id = Number(product.id);
-                return Number.isFinite(id) ? Math.max(highest, id) : highest;
-            }, 0) + 1;
-
-            const newProduct = {
-                id: newId,
-                name: fields.name.value.trim(),
-                category: fields.category.value,
-                price: fields.price.value.trim() || "Consultar oferta",
-                oldPrice: fields.oldPrice.value.trim(),
-                image: fields.image.value.trim(),
-                affiliateUrl: document.getElementById("affiliateUrl").value.trim(),
-                featured: fields.featured.checked,
-                bestSeller: fields.bestSeller.checked
-            };
-
-            products.push(newProduct);
-            saveProducts();
-            productForm.reset();
-            updatePreview();
-
-            alert("Produto adicionado!");
-        });
-
-        productList.addEventListener("click", function(event) {
-            const button = event.target.closest("[data-delete]");
-            if (!button) return;
-
-            if (!confirm("Deseja excluir este produto?")) return;
-
-            products = products.filter(product => String(product.id) !== button.dataset.delete);
-            saveProducts();
-        });
-
-        document.getElementById("exportButton").addEventListener("click", function() {
-            const blob = new Blob([JSON.stringify(products, null, 2)], {
-                type: "application/json"
-            });
-
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-
-            link.href = url;
-            link.download = "produtos.json";
-            link.click();
-
-            URL.revokeObjectURL(url);
-        });
-
-        document.getElementById("importButton").addEventListener("click", function() {
-            fileInput.click();
-        });
-
-        fileInput.addEventListener("change", async function() {
-            const file = fileInput.files[0];
-            if (!file) return;
-
-            try {
-                const importedProducts = JSON.parse(await file.text());
-
-                if (!Array.isArray(importedProducts)) {
-                    throw new Error("O arquivo precisa conter uma lista de produtos.");
-                }
-
-                const validProducts = importedProducts.every(product =>
-                    product &&
-                    typeof product === "object" &&
-                    !Array.isArray(product) &&
-                    product.id !== undefined &&
-                    typeof product.name === "string" &&
-                    typeof product.category === "string"
-                );
-
-                if (!validProducts) {
-                    throw new Error("O arquivo contém produtos inválidos.");
-                }
-
-                if (!confirm(`Importar ${importedProducts.length} produto(s)? O catálogo atual será substituído.`)) return;
-
-                products = importedProducts;
-                saveProducts();
-
-                alert("Produtos importados!");
-            } catch (error) {
-                alert(error.message || "Erro ao importar o arquivo.");
-            }
-
-            fileInput.value = "";
-        });
-
-        loadProducts();
-        updatePreview();
-    </script>
-
-</body>
-</html>
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+
+body {
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #e3e6e6;
+
+    color: #0f1111;
+
+}
+
+
+
+a {
+
+    text-decoration: none;
+
+    color: inherit;
+
+}
+
+
+
+button,
+
+input {
+
+    font-family: inherit;
+
+}
+
+
+
+.header {
+
+    width: 100%;
+
+    background: #131921;
+
+    color: #ffffff;
+
+}
+
+
+
+.header-top {
+
+    min-height: 68px;
+
+    padding: 10px 3%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 22px;
+
+}
+
+
+
+.logo {
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 175px;
+
+    padding: 8px;
+
+    border: 1px solid transparent;
+
+    line-height: 1;
+
+}
+
+
+
+.logo:hover {
+
+    border-color: #ffffff;
+
+}
+
+
+
+.logo-main {
+
+    font-size: 27px;
+
+    font-weight: 900;
+
+    letter-spacing: -1.5px;
+
+    color: #ffffff;
+
+}
+
+
+
+.logo-sub {
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    color: #ffb900;
+
+    letter-spacing: 3px;
+
+    text-align: center;
+
+    margin-top: 4px;
+
+}
+
+
+
+.search-container {
+
+    display: flex;
+
+    flex: 1;
+
+    max-width: 850px;
+
+    height: 44px;
+
+    border-radius: 5px;
+
+    overflow: hidden;
+
+    border: 3px solid transparent;
+
+}
+
+
+
+.search-container:focus-within {
+
+    border-color: #ffb900;
+
+}
+
+
+
+.search-container input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    border: none;
+
+    outline: none;
+
+    padding: 0 15px;
+
+    font-size: 15px;
+
+    color: #111111;
+
+    background: #ffffff;
+
+}
+
+
+
+.search-container input::placeholder {
+
+    color: #777777;
+
+}
+
+
+
+.search-container button {
+
+    width: 52px;
+
+    min-width: 52px;
+
+    border: none;
+
+    background: #febd69;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition: background 0.2s;
+
+}
+
+
+
+.search-container button:hover {
+
+    background: #f3a847;
+
+}
+
+
+
+.header-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+
+.header-actions a {
+
+    padding: 10px;
+
+    border: 1px solid transparent;
+
+    white-space: nowrap;
+
+}
+
+
+
+.header-actions a:hover {
+
+    border-color: #ffffff;
+
+}
+
+
+
+.navbar {
+
+    min-height: 39px;
+
+    background: #232f3e;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 3%;
+
+    gap: 25px;
+
+    overflow-x: auto;
+
+    white-space: nowrap;
+
+}
+
+
+
+.navbar a {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    padding: 12px 2px;
+
+    border-bottom: 2px solid transparent;
+
+    transition: 0.2s;
+
+}
+
+
+
+.navbar a:hover {
+
+    color: #ffb900;
+
+    border-bottom-color: #ffb900;
+
+}
+
+
+
+.hero {
+
+    min-height: 390px;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            rgba(19, 25, 33, 0.96) 0%,
+
+            rgba(19, 25, 33, 0.75) 45%,
+
+            rgba(19, 25, 33, 0.05) 100%
+
+        ),
+
+        url('https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=1800&auto=format&fit=crop');
+
+    background-size: cover;
+
+    background-position: center;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 50px 8%;
+
+}
+
+
+
+.hero-content {
+
+    max-width: 550px;
+
+    color: #ffffff;
+
+}
+
+
+
+.hero-tag {
+
+    display: inline-block;
+
+    background: #febd69;
+
+    color: #131921;
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+
+    padding: 9px 13px;
+
+    border-radius: 3px;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+.hero h1 {
+
+    font-size: clamp(38px, 5vw, 58px);
+
+    line-height: 1.08;
+
+    font-weight: 900;
+
+    margin-bottom: 18px;
+
+}
+
+
+
+.hero p {
+
+    font-size: 17px;
+
+    line-height: 1.6;
+
+    color: #eeeeee;
+
+    margin-bottom: 28px;
+
+}
+
+
+
+.hero-button {
+
+    display: inline-block;
+
+    background: #febd69;
+
+    color: #131921;
+
+    padding: 14px 28px;
+
+    border-radius: 25px;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    transition: 0.2s;
+
+}
+
+
+
+.hero-button:hover {
+
+    background: #f3a847;
+
+    transform: translateY(-2px);
+
+}
+
+
+
+.categories-section,
+
+.products-section {
+
+    padding: 35px 4%;
+
+}
+
+
+
+.categories-section {
+
+    background: #e3e6e6;
+
+}
+
+
+
+.section-heading {
+
+    margin-bottom: 22px;
+
+}
+
+
+
+.section-heading h2 {
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+    color: #0f1111;
+
+    margin-bottom: 7px;
+
+}
+
+
+
+.section-heading p {
+
+    font-size: 14px;
+
+    color: #565959;
+
+}
+
+
+
+.categories-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+
+}
+
+
+
+.category-card {
+
+    background: #ffffff;
+
+    min-height: 170px;
+
+    border-radius: 4px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    border: 1px solid #eeeeee;
+
+    transition: 0.2s;
+
+}
+
+
+
+.category-card:hover {
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+
+    transform: translateY(-3px);
+
+}
+
+
+
+.category-icon {
+
+    font-size: 42px;
+
+    margin-bottom: 12px;
+
+}
+
+
+
+.category-card h3 {
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+
+}
+
+
+
+.category-card span {
+
+    font-size: 13px;
+
+    color: #007185;
+
+    font-weight: 700;
+
+}
+
+
+
+.category-card:hover span {
+
+    color: #c45500;
+
+    text-decoration: underline;
+
+}
+
+
+
+.products-section {
+
+    background: #ffffff;
+
+    margin: 0 3% 35px;
+
+    border-radius: 4px;
+
+}
+
+
+
+.products-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+
+
+.product-card {
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 4px;
+
+    overflow: hidden;
+
+    transition: 0.2s;
+
+}
+
+
+
+.product-card:hover {
+
+    border-color: #c8c8c8;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+
+}
+
+
+
+.product-details-link {
+
+    display: block;
+
+    height: 100%;
+
+}
+
+
+
+.product-card .product-image {
+
+    width: 100%;
+
+    height: 230px;
+
+    background: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 12px;
+
+    overflow: hidden;
+
+}
+
+
+
+.product-card .product-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    max-width: 100%;
+
+    max-height: 100%;
+
+    object-fit: contain;
+
+    object-position: center;
+
+    display: block;
+
+    transition: transform 0.25s;
+
+}
+
+
+
+.product-card:hover .product-image img {
+
+    transform: scale(1.02);
+
+}
+
+
+
+.product-info {
+
+    padding: 16px;
+
+    border-top: 1px solid #eeeeee;
+
+}
+
+
+
+.product-category {
+
+    display: inline-block;
+
+    font-size: 11px;
+
+    color: #007185;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    margin-bottom: 9px;
+
+}
+
+
+
+.product-info h3 {
+
+    font-size: 15px;
+
+    line-height: 1.4;
+
+    min-height: 42px;
+
+    margin-bottom: 10px;
+
+    font-weight: 600;
+
+}
+
+
+
+.product-description {
+
+    color: #565959;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    min-height: 40px;
+
+    margin-bottom: 17px;
+
+}
+
+
+
+.product-price {
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    color: #0f1111;
+
+    margin-bottom: 14px;
+
+}
+
+
+
+.product-button {
+
+    display: block;
+
+    width: 100%;
+
+    background: #ffd814;
+
+    color: #0f1111;
+
+    padding: 11px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    border: 1px solid #fcd200;
+
+    transition: 0.2s;
+
+}
+
+
+
+.product-button:hover {
+
+    background: #f7ca00;
+
+}
+
+
+
+.no-results {
+
+    text-align: center;
+
+    padding: 35px;
+
+    color: #565959;
+
+    font-size: 15px;
+
+}
+
+
+
+.product-page {
+
+    max-width: 1500px;
+
+    margin: 0 auto;
+
+    padding: 25px 4%;
+
+}
+
+
+
+.breadcrumb {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #565959;
+
+    font-size: 13px;
+
+    margin-bottom: 22px;
+
+}
+
+
+
+.breadcrumb a {
+
+    color: #007185;
+
+}
+
+
+
+.breadcrumb a:hover {
+
+    color: #c45500;
+
+    text-decoration: underline;
+
+}
+
+
+
+.product-detail-container {
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+
+    gap: 45px;
+
+    background: #ffffff;
+
+    padding: 35px;
+
+    border-radius: 4px;
+
+    min-height: 450px;
+
+    overflow: hidden;
+
+}
+
+
+
+.detail-image,
+
+.product-detail-container .product-image {
+
+    min-width: 0;
+
+    width: 100%;
+
+    height: 450px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: #ffffff;
+
+    overflow: hidden;
+
+}
+
+
+
+.detail-image img,
+
+.product-detail-container .product-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    max-width: 100%;
+
+    max-height: 100%;
+
+    object-fit: contain;
+
+    object-position: center;
+
+    display: block;
+
+    padding: 15px;
+
+}
+
+
+
+.detail-info {
+
+    min-width: 0;
+
+    padding: 15px 10px;
+
+}
+
+
+
+.detail-info h1 {
+
+    font-size: 29px;
+
+    line-height: 1.3;
+
+    margin: 12px 0 18px;
+
+    color: #0f1111;
+
+}
+
+
+
+.detail-description {
+
+    color: #565959;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    margin-bottom: 22px;
+
+}
+
+
+
+.detail-old-price {
+
+    font-size: 14px;
+
+    color: #777777;
+
+    text-decoration: line-through;
+
+    margin-bottom: 8px;
+
+}
+
+
+
+.detail-price {
+
+    font-size: 27px;
+
+    font-weight: 800;
+
+    color: #b12704;
+
+    margin: 20px 0;
+
+}
+
+
+
+.features-title {
+
+    font-size: 17px;
+
+    margin: 25px 0 12px;
+
+}
+
+
+
+.features-list {
+
+    padding-left: 22px;
+
+    color: #444444;
+
+    font-size: 14px;
+
+    line-height: 2;
+
+    margin-bottom: 25px;
+
+}
+
+
+
+.buy-button {
+
+    display: block;
+
+    width: 100%;
+
+    max-width: 380px;
+
+    background: #ffd814;
+
+    color: #0f1111;
+
+    padding: 15px 20px;
+
+    border-radius: 25px;
+
+    border: 1px solid #fcd200;
+
+    text-align: center;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    transition: 0.2s;
+
+}
+
+
+
+.buy-button:hover {
+
+    background: #f7ca00;
+
+}
+
+
+
+.detail-notice {
+
+    max-width: 380px;
+
+    color: #777777;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    margin-top: 15px;
+
+}
+
+
+
+.related-section {
+
+    margin-top: 40px;
+
+    padding: 25px;
+
+    background: #ffffff;
+
+    border-radius: 4px;
+
+}
+
+
+
+.product-not-found {
+
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 70px 20px;
+
+}
+
+
+
+.product-not-found h2 {
+
+    margin-bottom: 15px;
+
+}
+
+
+
+.product-not-found p {
+
+    margin-bottom: 25px;
+
+    color: #565959;
+
+}
+
+
+
+.product-not-found .product-button {
+
+    max-width: 250px;
+
+    margin: 0 auto;
+
+}
+
+
+
+.footer {
+
+    background: #131921;
+
+    color: #ffffff;
+
+}
+
+
+
+.footer-content {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 38px 5%;
+
+    gap: 30px;
+
+}
+
+
+
+.footer-brand h2 {
+
+    font-size: 23px;
+
+    margin-bottom: 8px;
+
+}
+
+
+
+.footer-brand p {
+
+    color: #febd69;
+
+    font-size: 13px;
+
+}
+
+
+
+.footer-links {
+
+    display: flex;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
+
+}
+
+
+
+.footer-links a {
+
+    color: #dddddd;
+
+    font-size: 13px;
+
+}
+
+
+
+.footer-links a:hover {
+
+    color: #febd69;
+
+}
+
+
+
+.affiliate-notice {
+
+    border-top: 1px solid #394452;
+
+    padding: 20px 5%;
+
+    color: #bfc5cc;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    text-align: center;
+
+}
+
+
+
+.footer-bottom {
+
+    background: #0b1118;
+
+    padding: 18px;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    color: #aaaaaa;
+
+}
+
+
+
+@media (max-width: 1000px) {
+
+    .categories-grid,
+
+    .products-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+
+
+    .header-top {
+
+        flex-wrap: wrap;
+
+    }
+
+
+
+    .search-container {
+
+        order: 3;
+
+        max-width: 100%;
+
+        flex-basis: 100%;
+
+    }
+
+}
+
+
+
+@media (max-width: 700px) {
+
+    .product-page {
+
+        padding: 15px 3%;
+
+    }
+
+
+
+    .product-detail-container {
+
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+
+        padding: 18px;
+
+    }
+
+
+
+    .detail-image,
+
+    .product-detail-container .product-image {
+
+        height: 280px;
+
+    }
+
+
+
+    .detail-info {
+
+        padding: 10px 2px;
+
+    }
+
+
+
+    .detail-info h1 {
+
+        font-size: 22px;
+
+    }
+
+
+
+    .detail-price {
+
+        font-size: 24px;
+
+    }
+
+
+
+    .buy-button {
+
+        max-width: 100%;
+
+    }
+
+
+
+    .related-section {
+
+        padding: 18px 12px;
+
+    }
+
+
+
+    .related-section .products-grid {
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+
+    }
+
+}
+
+
+
+@media (max-width: 600px) {
+
+    .header-top {
+
+        padding: 12px 4%;
+
+        gap: 10px;
+
+    }
+
+
+
+    .logo {
+
+        min-width: auto;
+
+    }
+
+
+
+    .logo-main {
+
+        font-size: 23px;
+
+    }
+
+
+
+    .logo-sub {
+
+        font-size: 12px;
+
+    }
+
+
+
+    .header-actions {
+
+        gap: 5px;
+
+        font-size: 11px;
+
+    }
+
+
+
+    .header-actions a {
+
+        padding: 7px 4px;
+
+    }
+
+
+
+    .navbar {
+
+        padding: 0 4%;
+
+        gap: 20px;
+
+    }
+
+
+
+    .hero {
+
+        min-height: 330px;
+
+        padding: 35px 6%;
+
+        background-position: 60% center;
+
+    }
+
+
+
+    .hero h1 {
+
+        font-size: 38px;
+
+    }
+
+
+
+    .hero p {
+
+        font-size: 14px;
+
+    }
+
+
+
+    .categories-section,
+
+    .products-section {
+
+        padding: 28px 4%;
+
+    }
+
+
+
+    .products-section {
+
+        margin: 0 2% 25px;
+
+    }
+
+
+
+    .section-heading h2 {
+
+        font-size: 21px;
+
+    }
+
+
+
+    .categories-grid,
+
+    .products-grid {
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+
+    }
+
+
+
+    .category-card {
+
+        min-height: 145px;
+
+        padding: 12px;
+
+    }
+
+
+
+    .category-icon {
+
+        font-size: 32px;
+
+    }
+
+
+
+    .category-card h3 {
+
+        font-size: 13px;
+
+        text-align: center;
+
+    }
+
+
+
+    .category-card span {
+
+        font-size: 11px;
+
+    }
+
+
+
+    .product-card .product-image {
+
+        height: 155px;
+
+        padding: 10px;
+
+    }
+
+
+
+    .product-info {
+
+        padding: 12px;
+
+    }
+
+
+
+    .product-info h3 {
+
+        font-size: 13px;
+
+        min-height: 55px;
+
+    }
+
+
+
+    .product-description {
+
+        font-size: 11px;
+
+    }
+
+
+
+    .product-price {
+
+        font-size: 14px;
+
+    }
+
+
+
+    .product-button {
+
+        font-size: 12px;
+
+        padding: 10px 5px;
+
+    }
+
+
+
+    .footer-content {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding: 30px 5%;
+
+    }
+
+
+
+    .footer-links {
+
+        gap: 15px;
+
+    }
+
+}
+
+.categories-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+}
+
+
+
+.category-card {
+
+    min-width: 0;
+
+    min-height: 150px;
+
+    padding: 20px 12px;
+
+    text-align: center;
+
+}
+
+
+
+.category-icon {
+
+    font-size: 40px;
+
+    margin-bottom: 12px;
+
+}
+
+
+
+.category-card h3 {
+
+    font-size: 16px;
+
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+
+@media (max-width: 1100px) and (min-width: 601px) {
+
+    .categories-grid {
+
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    }
+
+}
+
+
+
+@media (max-width: 600px) {
+
+    .categories-grid {
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+
+    }
+
+
+
+    .category-card {
+
+        min-height: 135px;
+
+        padding: 14px 8px;
+
+    }
+
+
+
+    .category-icon {
+
+        font-size: 32px;
+
+    }
+
+
+
+    .category-card h3 {
+
+        font-size: 14px;
+
+    }
+
+}
+
+
+/* Ajustes dos cards de produtos */
+.products-grid,
+#productsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: 100%;
+}
+
+.product-details-link {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+}
+
+.product-card .product-image {
+    height: 220px;
+    flex: 0 0 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.product-card .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.product-info h3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    height: 4.2em;
+    min-height: 4.2em;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.product-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    height: 3em;
+    min-height: 3em;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.product-price {
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.product-button {
+    margin-top: 12px;
+}
+
+@media (max-width: 1100px) and (min-width: 701px) {
+    .products-grid,
+    #productsGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .products-grid,
+    #productsGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .product-card .product-image {
+        height: 150px;
+        flex-basis: 150px;
+        padding: 8px;
+    }
+
+    .product-info {
+        padding: 10px;
+    }
+
+    .product-info h3 {
+        font-size: 13px;
+        height: 3.9em;
+        min-height: 3.9em;
+    }
+
+    .product-description {
+        font-size: 11px;
+        height: 3em;
+        min-height: 3em;
+    }
+
+    .product-price {
+        font-size: 14px;
+    }
+
+    .product-button {
+        font-size: 12px;
+        padding: 10px 5px;
+    }
+}
+
+@media (max-width: 360px) {
+    .products-grid,
+    #productsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-card .product-image {
+        height: 190px;
+        flex-basis: 190px;
+    }
+}
