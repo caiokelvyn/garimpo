@@ -6,6 +6,10 @@ const noResults = document.getElementById("noResults");
 
 let products = [];
 let selectedCategory = "";
+let filteredProducts = [];
+let visibleProducts = 30;
+
+const productsPerPage = 30;
 
 function normalizeText(text) {
     return String(text || "")
@@ -109,12 +113,19 @@ function renderProducts(items) {
 
     noResults.hidden = items.length > 0;
 
+    const visibleItems = items.slice(0, visibleProducts);
+
     document.getElementById("productCount").textContent =
-        `${items.length} produto(s) encontrado(s)`;
+        items.length === 0
+            ? "Nenhum produto encontrado"
+            : `Mostrando ${visibleItems.length} de ${items.length} produto(s)`;
 
-    if (items.length === 0) return;
+    if (items.length === 0) {
+        updateLoadMoreButton();
+        return;
+    }
 
-    items.forEach(product => {
+    visibleItems.forEach(product => {
         const card = document.createElement("article");
         card.className = "product-card";
 
@@ -199,6 +210,29 @@ function renderProducts(items) {
         card.appendChild(link);
         productsGrid.appendChild(card);
     });
+
+    updateLoadMoreButton();
+}
+
+function updateLoadMoreButton() {
+    let button = document.getElementById("loadMoreProducts");
+
+    if (!button) {
+        button = document.createElement("button");
+        button.id = "loadMoreProducts";
+        button.className = "clear-filters";
+        button.textContent = "Carregar mais produtos";
+        button.style.display = "block";
+        button.style.margin = "30px auto";
+        button.addEventListener("click", () => {
+            visibleProducts += productsPerPage;
+            renderProducts(filteredProducts);
+        });
+
+        productsGrid.insertAdjacentElement("afterend", button);
+    }
+
+    button.hidden = visibleProducts >= filteredProducts.length;
 }
 
 function filterProducts() {
@@ -211,7 +245,7 @@ function filterProducts() {
     const featuredOnly = document.getElementById("featuredOnly").checked;
     const bestSellerOnly = document.getElementById("bestSellerOnly").checked;
 
-    let filteredProducts = products.filter(product => {
+    filteredProducts = products.filter(product => {
         const productCategory = normalizeText(product.category);
         const currentPrice = parsePrice(product.price);
         const discount = getDiscount(product.oldPrice, product.price);
@@ -263,6 +297,7 @@ function filterProducts() {
     const title = document.getElementById("catalogTitle");
     title.textContent = selectedCategory || "Todos os produtos";
 
+    visibleProducts = productsPerPage;
     renderProducts(filteredProducts);
 }
 
@@ -317,8 +352,12 @@ searchInput.addEventListener("keydown", event => {
 
 document.querySelectorAll(".category-card, .navbar a").forEach(link => {
     link.addEventListener("click", event => {
+        const category = link.dataset.category;
+
+        if (category === undefined) return;
+
         event.preventDefault();
-        selectCategory(link.dataset.category || "");
+        selectCategory(category || "");
     });
 });
 
@@ -333,5 +372,12 @@ document.getElementById("clearFilters").addEventListener("click", clearFilters);
 document.getElementById("mobileFilterButton").addEventListener("click", () => {
     document.getElementById("filterSidebar").classList.toggle("filters-open");
 });
+
+const searchParams = new URLSearchParams(window.location.search);
+const initialSearch = searchParams.get("busca");
+
+if (initialSearch) {
+    searchInput.value = initialSearch;
+}
 
 loadProducts();

@@ -2,8 +2,6 @@
 const params = new URLSearchParams(window.location.search);
 const productId = params.get("id");
 
-const whatsappGroupUrl = "https://chat.whatsapp.com/BY2RTReSVOZ0d8MsQjJU9M?s=cl&p=i&mlu=4&ilr=4&iam=2";
-
 function escapeHTML(value) {
     return String(value ?? "").replace(/[&<>"']/g, character => ({
         "&": "&amp;",
@@ -15,12 +13,18 @@ function escapeHTML(value) {
 }
 
 function parsePrice(value) {
-    if (typeof value === "number") return value;
+    if (typeof value === "number") {
+        return Number.isFinite(value) ? value : null;
+    }
 
-    let price = String(value || "").replace(/[^\d.,]/g, "");
+    if (!value) return null;
+
+    let price = String(value).replace(/[^\d.,]/g, "");
 
     if (price.includes(",")) {
         price = price.replace(/\./g, "").replace(",", ".");
+    } else if ((price.match(/\./g) || []).length > 1) {
+        price = price.replace(/\./g, "");
     }
 
     const result = Number(price);
@@ -128,11 +132,6 @@ function renderProduct(product, products) {
                 <a class="whatsapp-share-button" href="${whatsappUrl}" target="_blank" rel="noopener noreferrer">
                     <span>↗</span>
                     Compartilhar
-                </a>
-
-                <a class="whatsapp-group-button" href="${whatsappGroupUrl}" target="_blank" rel="noopener noreferrer">
-                    <span>●</span>
-                    Entrar no grupo
                 </a>
             </div>
 

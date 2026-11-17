@@ -1995,3 +1995,115 @@ input {
         font-size: 11px;
     }
 }
+
+.whatsapp-invite {
+    width: 100%;
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: #ffffff;
+    border: 1px solid #d5d9d9;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.whatsapp-invite-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    min-width: 0;
+}
+
+.whatsapp-invite-icon {
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #e8f8ee;
+    color: #16a34a;
+    font-size: 32px;
+}
+
+.whatsapp-invite-text {
+    min-width: 0;
+}
+
+.whatsapp-invite-text h2 {
+    margin: 0 0 6px;
+    color: #131921;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.whatsapp-invite-text p {
+    margin: 0;
+    color: #565959;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.whatsapp-invite-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-height: 43px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    background: #16a34a;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.whatsapp-invite-button:hover {
+    background: #15803d;
+}
+
+@media (max-width: 600px) {
+    .whatsapp-invite {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+        margin: 25px auto;
+        padding: 18px 15px;
+    }
+
+    .whatsapp-invite-content {
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .whatsapp-invite-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        font-size: 28px;
+    }
+
+    .whatsapp-invite-text h2 {
+        font-size: 17px;
+    }
+
+    .whatsapp-invite-text p {
+        font-size: 12px;
+    }
+
+    .whatsapp-invite-button {
+        width: 100%;
+        min-height: 43px;
+    }
+}
