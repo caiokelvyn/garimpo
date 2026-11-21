@@ -1,4 +1,3 @@
-
 const productsGrid = document.getElementById("productsGrid");
 const searchInput = document.getElementById("searchInput");
 const searchButton = document.getElementById("searchButton");
@@ -83,9 +82,28 @@ async function loadProducts() {
 function renderCategoryFilters() {
     const container = document.getElementById("categoryFilters");
 
-    const categories = [...new Set(
+    const categoryOrder = [
+        "Cabelo",
+        "Sapatos",
+        "Skincare",
+        "Esportes",
+        "Maquiagem",
+        "Escritório",
+        "Eletrônicos",
+        "Informática",
+        "Ferramentas",
+        "Itens de Casa",
+        "Games e Consoles",
+        "Relógios e Joias",
+        "Suplementos e Nutrição",
+        "Celulares e Smartphones"
+    ];
+
+    const extraCategories = [...new Set(
         products.map(product => product.category).filter(Boolean)
-    )].sort((a, b) => a.localeCompare(b, "pt-BR"));
+    )].filter(category => !categoryOrder.includes(category));
+
+    const categories = [...categoryOrder, ...extraCategories];
 
     container.innerHTML = `
         <label class="filter-option">

@@ -384,6 +384,7 @@ input {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     overflow-wrap: anywhere;
 }
 
@@ -398,6 +399,7 @@ input {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
 }
 
 .product-price {
@@ -1765,6 +1767,7 @@ input {
     line-height: 1.45;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
 }
 
 .catalog-content .product-description {
@@ -2106,4 +2109,9 @@ input {
         width: 100%;
         min-height: 43px;
     }
+}
+.detail-price-notice {
+    margin: 8px 0 16px;
+    color: #555;
+    font-size: 13px;
 }

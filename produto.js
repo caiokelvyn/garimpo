@@ -52,7 +52,6 @@ function renderProduct(product, products) {
     const image = escapeHTML(product.image || "");
     const price = escapeHTML(product.price || "Consultar oferta");
     const oldPrice = escapeHTML(product.oldPrice || "");
-    const description = escapeHTML(product.description || "");
 
     const discount = getDiscount(product.oldPrice, product.price);
 
@@ -64,34 +63,6 @@ function renderProduct(product, products) {
     const shareMessage = `Olha que oferta encontrei no Garimpo dos Bons!\n\n${product.name}\n${product.price || "Consulte a oferta"}\n\nConfira aqui: ${productUrl}`;
 
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
-
-    const features = Array.isArray(product.features)
-        ? product.features
-        : typeof product.features === "string"
-            ? product.features.split("\n").filter(item => item.trim())
-            : [];
-
-    const safeFeatures = features
-        .map(item => `<li>${escapeHTML(item)}</li>`)
-        .join("");
-
-    const descriptionSection = description
-        ? `
-            <section class="detail-extra-section">
-                <h2>Descrição do produto</h2>
-                <p>${description}</p>
-            </section>
-        `
-        : "";
-
-    const featuresSection = safeFeatures
-        ? `
-            <section class="detail-extra-section">
-                <h2>Características do produto</h2>
-                <ul class="features-list">${safeFeatures}</ul>
-            </section>
-        `
-        : "";
 
     const affiliateButton = product.affiliateUrl
         ? `
@@ -124,6 +95,7 @@ function renderProduct(product, products) {
                 ${oldPrice ? `<p class="detail-old-price">${oldPrice}</p>` : ""}
                 <p class="detail-price">${price}</p>
                 ${discount ? `<span class="detail-discount-text">${discount}% de desconto</span>` : ""}
+                <p class="detail-price-notice">Produto sujeito a alteração de valor.</p>
             </div>
 
             ${affiliateButton}
@@ -134,15 +106,6 @@ function renderProduct(product, products) {
                     Compartilhar
                 </a>
             </div>
-
-            <div class="detail-delivery-note">
-                <strong>Garimpo dos Bons</strong>
-                <p>Encontre boas ofertas e aproveite as oportunidades.</p>
-                <p>Preço e disponibilidade podem mudar no site da loja.</p>
-            </div>
-
-            ${descriptionSection}
-            ${featuresSection}
         </div>
     `;
 
@@ -151,6 +114,8 @@ function renderProduct(product, products) {
     }
 
     document.title = `${product.name || "Produto"} | Garimpo dos Bons`;
+
+    if (!related) return;
 
     const relatedProducts = products
         .filter(item =>
